@@ -18,6 +18,7 @@ public class Calculator implements ActionListener{
     double a, b;
     int x, y, i;
     String op = "";
+    // heLlo brother
     String chr[] = {"+","-","*","/"};
     public Calculator(){
         calFrame = new Frame("Calculator");
