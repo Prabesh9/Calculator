@@ -137,17 +137,29 @@ public class Calculator implements ActionListener{
                     b = 0;
                 }
                 op = chr[i];
-                alLabel.setText(a+op+"     ");
+                if(a != (int) a)
+                    alLabel.setText(a+op+"     ");
+                else
+                    alLabel.setText((int)a+op+"     ");
                 calLabel.setText(" ");
             }
         }
         
+        String disp;
         if(ae.getSource()==eql){
-            alLabel.setText(a+op+b+"     ");
+            if(a==(int)a)
+                disp = ""+(int)a;
+            else
+                disp = ""+a;
+            if(b==(int)b)
+                disp += op+(int)b+"     ";
+            else
+                disp += op+b+"     ";
+            alLabel.setText(disp);
             a = result();
             op = "";
             b = 0;
-            calLabel.setText(a+" ");
+            display(a);
         }
         
     }
