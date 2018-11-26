@@ -6,6 +6,7 @@
 package Calculate;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
 /**
  *
  * @author prabe
@@ -173,6 +174,8 @@ public class Calculator implements ActionListener{
     }
     
     public double result(){
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(4);
         double eq = 0;
         switch(op){
             case "+":
@@ -188,7 +191,7 @@ public class Calculator implements ActionListener{
                 eq = a/b;
                 break;
         }
-        return eq;
+        return Double.parseDouble(df.format(eq));
     }
     
     public static void main(String[] args) {
