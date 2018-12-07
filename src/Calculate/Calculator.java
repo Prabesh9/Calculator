@@ -16,12 +16,13 @@ public class Calculator implements ActionListener{
     Panel disPanel,keyPanel,uKeyPanel,lKeyPanel,cKeyPanel;
     Label alLabel, calLabel;
     Button num[], opt[], clr, bak, eql;
+    Calculate cal;
     double a, b;
     int x, y, i;
-    String op = "";
-    String chr[] = {"+","-","*","/"};
+    char chr[] = {'+','-','*','/'};
     public Calculator(){
         calFrame = new Frame("Calculator");
+        cal = new Calculate();
         a = 0;
         b = 0;
         
@@ -51,12 +52,12 @@ public class Calculator implements ActionListener{
         
             /*------Upper Keys------*/
             uKeyPanel = new Panel(new GridLayout(1,4,5,5));
-            clr = new Button("Clr");  //Clear Button
-            clr.setPreferredSize(new Dimension(75,75));
+            bak = new Button("Clr");  //Clear Button
+            bak.setPreferredSize(new Dimension(75,75));
             opt = new Button[4];
             for(int i = 0; i < 4; i++)
-                opt[i] = new Button(chr[i]);
-            uKeyPanel.add(clr);
+                opt[i] = new Button(""+chr[i]);
+            uKeyPanel.add(bak);
             uKeyPanel.add(opt[3]);
             uKeyPanel.add(opt[2]);
             uKeyPanel.add(opt[1]);
@@ -99,6 +100,8 @@ public class Calculator implements ActionListener{
         
         /*----------End of Calculator Layout----------*/
         
+        bak.addActionListener(this);
+        
         for(i=0; i<10; i++){
             num[i].addActionListener(this);
         }
@@ -120,79 +123,95 @@ public class Calculator implements ActionListener{
         System.out.println(ae.getSource());
         for(i=0;i<10;i++){
             if(ae.getSource()==num[i]){
-                if(op==""){
-                    a = a*10 + i;
-                    display(a);
+                if(cal.op == '0'){
+                    cal.a = cal.a*10 + i;
+                    display(cal.a);
                 }
                 else{
-                    b = b*10 + i;
-                    display(b);
+                    cal.b = cal.b*10 + i;
+                    display(cal.b);
                 }
             }
         }
         
         for(i=0;i<4;i++){
             if(ae.getSource()==opt[i]){
-                if(b!=0){
-                    a = result();
-                    b = 0;
+                if(cal.op!='0'){
+                    display(cal.result());
+                    cal.a=cal.r;
+                    cal.b = 0;
+                    cal.op = '0';
                 }
-                op = chr[i];
-                if(a != (int) a)
-                    alLabel.setText(a+op+"     ");
-                else
-                    alLabel.setText((int)a+op+"     ");
+                cal.op = chr[i];
+//                if(a != (int) a)
+                    alLabel.setText(calLabel.getText()+"     "+cal.op+"     ");
+//                else
+//                    alLabel.setText((int)a+op+"     ");
                 calLabel.setText(" ");
             }
         }
         
         String disp;
         if(ae.getSource()==eql){
-            if(a==(int)a)
-                disp = ""+(int)a;
-            else
-                disp = ""+a;
-            if(b==(int)b)
-                disp += op+(int)b+"     ";
-            else
-                disp += op+b+"     ";
-            alLabel.setText(disp);
-            a = result();
-            op = "";
-            b = 0;
-            display(a);
+            if(cal.op!='0'&&cal.b!=0)
+                alLabel.setText(alLabel.getText()+calLabel.getText());
+            display(cal.result());
+            cal.a=cal.r;
+            cal.b = 0;
+            cal.op = '0';
+        }
+        
+        if(ae.getSource()==bak){
+            String str = calLabel.getText();
+//            str = str.substring(0, (str.length()-2));
+//            System.out.println(Double.parseDouble(str));
+            if(str.length()>2){
+                str = str.substring(0, (str.length()-2));
+                if(cal.op!='0')
+                    cal.b = Double.parseDouble(str);
+                else
+                    cal.a = Double.parseDouble(str);
+                display(Double.parseDouble(str));
+            }
+            else{
+                if(cal.op!='0')
+                    cal.b = 0;
+                else
+                    cal.a = 0;
+                display(0);
+            }
         }
         
     }
     
     public void display(double q){
-        int s = (int) q;
+        long s = (long) q;
         if(s==q)
             calLabel.setText(s+" ");
         else
             calLabel.setText(q+" ");
     }
     
-    public double result(){
-        DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(4);
-        double eq = 0;
-        switch(op){
-            case "+":
-                eq = a+b;
-                break;
-            case "-":
-                eq = a-b;
-                break;
-            case "*":
-                eq = a*b;
-                break;
-            case "/":
-                eq = a/b;
-                break;
-        }
-        return Double.parseDouble(df.format(eq));
-    }
+//    public double result(){
+//        DecimalFormat df = new DecimalFormat();
+//        df.setMaximumFractionDigits(4);
+//        double eq = 0;
+//        switch(op){
+//            case "+":
+//                eq = a+b;
+//                break;
+//            case "-":
+//                eq = a-b;
+//                break;
+//            case "*":
+//                eq = a*b;
+//                break;
+//            case "/":
+//                eq = a/b;
+//                break;
+//        }
+//        return Double.parseDouble(df.format(eq));
+//    }
     
     public static void main(String[] args) {
         new Calculator();
