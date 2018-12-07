@@ -117,6 +117,7 @@ public class Calculator implements ActionListener{
                 System.exit(0);
             }
         });
+        
     }
     
     public void actionPerformed(ActionEvent ae){
@@ -143,15 +144,11 @@ public class Calculator implements ActionListener{
                     cal.op = '0';
                 }
                 cal.op = chr[i];
-//                if(a != (int) a)
-                    alLabel.setText(calLabel.getText()+"     "+cal.op+"     ");
-//                else
-//                    alLabel.setText((int)a+op+"     ");
+                alLabel.setText(calLabel.getText()+"     "+cal.op+"     ");
                 calLabel.setText(" ");
             }
         }
         
-        String disp;
         if(ae.getSource()==eql){
             if(cal.op!='0'&&cal.b!=0)
                 alLabel.setText(alLabel.getText()+calLabel.getText());
@@ -163,8 +160,6 @@ public class Calculator implements ActionListener{
         
         if(ae.getSource()==bak){
             String str = calLabel.getText();
-//            str = str.substring(0, (str.length()-2));
-//            System.out.println(Double.parseDouble(str));
             if(str.length()>2){
                 str = str.substring(0, (str.length()-2));
                 if(cal.op!='0')
@@ -192,26 +187,6 @@ public class Calculator implements ActionListener{
             calLabel.setText(q+" ");
     }
     
-//    public double result(){
-//        DecimalFormat df = new DecimalFormat();
-//        df.setMaximumFractionDigits(4);
-//        double eq = 0;
-//        switch(op){
-//            case "+":
-//                eq = a+b;
-//                break;
-//            case "-":
-//                eq = a-b;
-//                break;
-//            case "*":
-//                eq = a*b;
-//                break;
-//            case "/":
-//                eq = a/b;
-//                break;
-//        }
-//        return Double.parseDouble(df.format(eq));
-//    }
     
     public static void main(String[] args) {
         new Calculator();
