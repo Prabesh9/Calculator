@@ -6,6 +6,7 @@
 package Calculate;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
 /**
  *
  * @author prabe
@@ -16,14 +17,14 @@ public class Calculator implements ActionListener{
     Label alLabel, calLabel;
     Button num[], opt[], clr, bak, eql;
     Calculate cal;
-    double a, b;
+    String a, b;
     int x, y, i;
     char chr[] = {'+','-','*','/'};
     public Calculator(){
         calFrame = new Frame("Calculator");
         cal = new Calculate();
-        a = 0;
-        b = 0;
+        a = "0";
+        b = "0";
         
         /*------Starting Display Panel------*/
         disPanel = new Panel();
@@ -51,7 +52,7 @@ public class Calculator implements ActionListener{
         
             /*------Upper Keys------*/
             uKeyPanel = new Panel(new GridLayout(1,4,5,5));
-            bak = new Button("Clr");  //Clear Button
+            bak = new Button("<<<");
             bak.setPreferredSize(new Dimension(75,75));
             opt = new Button[4];
             for(int i = 0; i < 4; i++)
@@ -124,12 +125,14 @@ public class Calculator implements ActionListener{
         for(i=0;i<10;i++){
             if(ae.getSource()==num[i]){
                 if(cal.op == '0'){
-                    cal.a = cal.a*10 + i;
-                    display(cal.a);
+//                    cal.a = cal.a*10 + i;
+                    a += i;
+                    display(Double.parseDouble(a));
                 }
                 else{
-                    cal.b = cal.b*10 + i;
-                    display(cal.b);
+//                    cal.b = cal.b*10 + i;
+                    b += i;
+                    display(Double.parseDouble(b));
                 }
             }
         }
@@ -142,6 +145,8 @@ public class Calculator implements ActionListener{
                     cal.b = 0;
                     cal.op = '0';
                 }
+                cal.a = Double.parseDouble(a);
+                cal.b=Double.parseDouble(b);
                 cal.op = chr[i];
                 alLabel.setText(calLabel.getText()+"     "+cal.op+"     ");
                 calLabel.setText(" ");
@@ -149,6 +154,8 @@ public class Calculator implements ActionListener{
         }
         
         if(ae.getSource()==eql){
+            cal.a = Double.parseDouble(a);
+            cal.b=Double.parseDouble(b);
             if(cal.op!='0'&&cal.b!=0)
                 alLabel.setText(alLabel.getText()+calLabel.getText());
             display(cal.result());
@@ -158,32 +165,52 @@ public class Calculator implements ActionListener{
         }
         
         if(ae.getSource()==bak){
-            String str = calLabel.getText();
-            if(str.length()>2){
-                str = str.substring(0, (str.length()-2));
-                if(cal.op!='0')
-                    cal.b = Double.parseDouble(str);
-                else
-                    cal.a = Double.parseDouble(str);
+            String str="0";
+//            String str = calLabel.getText();
+//            if(str.length()>2){
+//                str = str.substring(0, (str.length()-2));
+                if(b.length()>1){
+                    b = b.substring(0, b.length()-1);
+                    str = b;
+                }
+//                    cal.b = Double.parseDouble(str);
+                else if(b.length()==1&&b!="0"){
+                    b = "0";
+                    str = b;
+                }
+                else if(cal.op!='0'){
+                    cal.op = '0';
+                    str = a;
+                }
+                else if(a.length()>1){
+                    a = a.substring(0, a.length()-1);
+                    str = a;
+                }
+                else if(a.length()==1&&a!="0"){ 
+                    a = "0";
+                    str = a;
+                }
                 display(Double.parseDouble(str));
-            }
-            else{
-                if(cal.op!='0')
-                    cal.b = 0;
-                else
-                    cal.a = 0;
-                display(0);
-            }
+//            }
+//            else{
+//                if(cal.op!='0')
+//                    cal.b = 0;
+//                else
+//                    cal.a = 0;
+//                display(0);
+//            }
         }
         
     }
     
     public void display(double q){
         long s = (long) q;
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(4);
         if(s==q)
-            calLabel.setText(s+" ");
+            calLabel.setText(df.format(s)+" ");
         else
-            calLabel.setText(q+" ");
+            calLabel.setText(df.format(q)+" ");
     }
     
     
