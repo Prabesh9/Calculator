@@ -15,11 +15,12 @@ public class Calculator implements ActionListener{
     Frame calFrame;
     Panel disPanel,keyPanel,uKeyPanel,lKeyPanel,cKeyPanel;
     Label alLabel, calLabel;
-    Button num[], opt[], clr, bak, eql;
+    Button num[], opt[], clr, bak, eql, dec, neg;
     Calculate cal;
     String a, b;
     int x, y, i;
     char chr[] = {'+','-','*','/'};
+    DecimalFormat df = new DecimalFormat();
     public Calculator(){
         calFrame = new Frame("Calculator");
         cal = new Calculate();
@@ -79,9 +80,11 @@ public class Calculator implements ActionListener{
             cKeyPanel.add(num[1]);
             cKeyPanel.add(num[2]);
             cKeyPanel.add(num[3]);
-            cKeyPanel.add(new Button("+/-"));
+            neg = new Button("+/-");
+            cKeyPanel.add(neg);
             cKeyPanel.add(num[0]);
-            cKeyPanel.add(new Button("."));
+            dec =new Button(".");
+            cKeyPanel.add(dec);
             num[1].setPreferredSize(new Dimension(75,75));
                 
             /*------Left Keys------*/
@@ -115,6 +118,8 @@ public class Calculator implements ActionListener{
         }
         
         eql.addActionListener(this);
+        dec.addActionListener(this);
+        
         
         calFrame.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent we){
@@ -131,12 +136,14 @@ public class Calculator implements ActionListener{
                 if(cal.op == '0'){
 //                    cal.a = cal.a*10 + i;
                     a += i;
-                    display(Double.parseDouble(a));
+//                    display(Double.parseDouble(a));
+                    display('a');
                 }
                 else{
 //                    cal.b = cal.b*10 + i;
                     b += i;
-                    display(Double.parseDouble(b));
+//                    display(Double.parseDouble(b));
+                    display('b');
                 }
             }
         }
@@ -145,8 +152,8 @@ public class Calculator implements ActionListener{
             if(ae.getSource()==opt[i]){
                 if(cal.op!='0'){
                     display(cal.result());
-                    cal.a=cal.r;
-                    cal.b = 0;
+                    a=calLabel.getText();
+                    b = "0";
                     cal.op = '0';
                 }
                 cal.a = Double.parseDouble(a);
@@ -163,8 +170,8 @@ public class Calculator implements ActionListener{
             if(cal.op!='0'&&cal.b!=0)
                 alLabel.setText(alLabel.getText()+calLabel.getText());
             display(cal.result());
-            cal.a=cal.r;
-            cal.b = 0;
+            a = calLabel.getText();
+            b = "0";
             cal.op = '0';
         }
         
@@ -176,25 +183,30 @@ public class Calculator implements ActionListener{
                 if(b.length()>1){
                     b = b.substring(0, b.length()-1);
                     str = b;
+                    display('b');
                 }
 //                    cal.b = Double.parseDouble(str);
                 else if(b.length()==1&&b!="0"){
                     b = "0";
                     str = b;
+                    display('b');
                 }
                 else if(cal.op!='0'){
                     cal.op = '0';
                     str = a;
+                    display('a');
                 }
                 else if(a.length()>1){
                     a = a.substring(0, a.length()-1);
                     str = a;
+                    display('a');
                 }
                 else if(a.length()==1&&a!="0"){ 
                     a = "0";
                     str = a;
+                    display('a');
                 }
-                display(Double.parseDouble(str));
+//                display(Double.parseDouble(str));
 //            }
 //            else{
 //                if(cal.op!='0')
@@ -204,17 +216,50 @@ public class Calculator implements ActionListener{
 //                display(0);
 //            }
         }
+        if(ae.getSource()==dec){
+            if(cal.op == '0'){
+//                    cal.a = cal.a*10 + i;
+                    if(!a.contains("."))
+                        a += ".";
+                    display('a');
+                    System.out.println(a);
+                }
+                else{
+//                    cal.b = cal.b*10 + i;
+                    if(!b.contains("."))
+                        b += ".";
+                    display('b');
+                    System.out.println(b);
+                }
+        }
         
     }
     
     public void display(double q){
         long s = (long) q;
-        DecimalFormat df = new DecimalFormat();
+        
         df.setMaximumFractionDigits(4);
         if(s==q)
             calLabel.setText(df.format(s)+" ");
         else
             calLabel.setText(df.format(q)+" ");
+    }
+    public void display(char z){
+        if(z=='a'){
+            System.out.println(a);
+            if(a.contains("."))
+//                System.out.println((Double.parseDouble(a))+" ");
+                calLabel.setText((Double.parseDouble(a))+" ");
+            else
+                calLabel.setText(df.format(Long.parseLong(a))+" ");
+        }
+        else{
+            if(b.contains("."))
+//                System.out.println((Double.parseDouble(a))+" ");
+                calLabel.setText((Double.parseDouble(b))+" ");
+            else
+                calLabel.setText(df.format(Long.parseLong(b))+" ");
+        }
     }
     
     
