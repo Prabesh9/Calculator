@@ -21,6 +21,7 @@ public class Calculator implements ActionListener{
     int x, y, i;
     char chr[] = {'+','-','*','/'};
     DecimalFormat df = new DecimalFormat();
+    Boolean eq;
     public Calculator(){
         calFrame = new Frame("Calculator");
         cal = new Calculate();
