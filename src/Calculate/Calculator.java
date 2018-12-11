@@ -51,40 +51,44 @@ public class Calculator implements ActionListener{
         keyPanel = new Panel();
         
             /*------Upper Keys------*/
-            uKeyPanel = new Panel(new GridLayout(1,4,5,5));
+            uKeyPanel = new Panel(new GridLayout(3,4,5,5));
+            clr = new Button("AC");
             bak = new Button("<<<");
             bak.setPreferredSize(new Dimension(75,75));
             opt = new Button[4];
             for(int i = 0; i < 4; i++)
                 opt[i] = new Button(""+chr[i]);
+            uKeyPanel.add(clr);
             uKeyPanel.add(bak);
             uKeyPanel.add(opt[3]);
             uKeyPanel.add(opt[2]);
-            uKeyPanel.add(opt[1]);
-                
-            /*------Middle Keys------*/
-            cKeyPanel = new Panel(new GridLayout(4,3,5,5));
             num = new Button[10];
             for(int i = 0; i<10; i++)
                 num[i] = new Button(""+i);
-            cKeyPanel.add(num[7]);
-            cKeyPanel.add(num[8]);
-            cKeyPanel.add(num[9]);
-            cKeyPanel.add(num[4]);
-            cKeyPanel.add(num[5]);
-            cKeyPanel.add(num[6]);
+            uKeyPanel.add(num[7]);
+            uKeyPanel.add(num[8]);
+            uKeyPanel.add(num[9]);    
+            uKeyPanel.add(opt[1]);
+            uKeyPanel.add(num[4]);
+            uKeyPanel.add(num[5]);
+            uKeyPanel.add(num[6]);
+            uKeyPanel.add(opt[0]);
+            
+            /*------Middle Keys------*/
+            cKeyPanel = new Panel(new GridLayout(2,3,5,5));
             cKeyPanel.add(num[1]);
             cKeyPanel.add(num[2]);
             cKeyPanel.add(num[3]);
+            cKeyPanel.add(new Button("+/-"));
             cKeyPanel.add(num[0]);
+            cKeyPanel.add(new Button("."));
             num[1].setPreferredSize(new Dimension(75,75));
                 
-            /*------Lower Keys------*/
-            lKeyPanel = new Panel(new GridLayout(2,1,5,5));
+            /*------Left Keys------*/
+            lKeyPanel = new Panel(new GridLayout(1,1,5,5));
             eql = new Button("=");
-            lKeyPanel.add(opt[0]);
             lKeyPanel.add(eql);
-            opt[0].setPreferredSize(new Dimension(75,155));
+            eql.setPreferredSize(new Dimension(75,155));
                             
             /*-----Adding Key Panel-----*/    
             keyPanel.add(uKeyPanel, BorderLayout.NORTH);

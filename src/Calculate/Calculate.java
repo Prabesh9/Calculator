@@ -38,6 +38,7 @@ public class Calculate {
             default :
                 r = a;
         }
-        return Double.parseDouble(df.format(r));
+        System.out.println(r);
+        return Double.parseDouble(""+r);
     }
 }
