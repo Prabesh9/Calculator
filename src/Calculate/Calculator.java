@@ -21,12 +21,12 @@ public class Calculator implements ActionListener{
     int x, y, i;
     char chr[] = {'+','-','*','/'};
     DecimalFormat df = new DecimalFormat();
-    Boolean eq;
+    Boolean eq = false;
     public Calculator(){
         calFrame = new Frame("Calculator");
         cal = new Calculate();
-        a = "0";
-        b = "0";
+        a = "";
+        b = "";
         
         /*------Starting Display Panel------*/
         disPanel = new Panel();
@@ -134,104 +134,106 @@ public class Calculator implements ActionListener{
         System.out.println(ae.getSource());
         for(i=0;i<10;i++){
             if(ae.getSource()==num[i]){
+                if(eq)
+                    a = "";
                 if(cal.op == '0'){
-//                    cal.a = cal.a*10 + i;
                     a += i;
-//                    display(Double.parseDouble(a));
-                    display('a');
+                    calLabel.setText(a+" ");
                 }
                 else{
-//                    cal.b = cal.b*10 + i;
                     b += i;
-//                    display(Double.parseDouble(b));
-                    display('b');
+                    calLabel.setText(cal.op+b+" ");
                 }
+                eq = false;
+                break;
             }
         }
         
         for(i=0;i<4;i++){
             if(ae.getSource()==opt[i]){
                 if(cal.op!='0'){
+                    cal.a = Double.parseDouble(a);
+                    cal.b = Double.parseDouble(b);
                     display(cal.result());
                     a=calLabel.getText();
-                    b = "0";
+                    b = "";
                     cal.op = '0';
                 }
+//                System.out.println(a);
                 cal.a = Double.parseDouble(a);
-                cal.b=Double.parseDouble(b);
+//                cal.b=Double.parseDouble(b);
                 cal.op = chr[i];
-                alLabel.setText(calLabel.getText()+"     "+cal.op+"     ");
-                calLabel.setText(" ");
+                alLabel.setText(calLabel.getText()+"     ");
+                calLabel.setText(cal.op+" ");
+                eq = false;
+                break;
             }
         }
         
         if(ae.getSource()==eql){
-            cal.a = Double.parseDouble(a);
-            cal.b=Double.parseDouble(b);
+            eq = true;
+            if(a!="")
+                cal.a = Double.parseDouble(a);
+            else
+                cal.a=0;
+            if(b!="")
+                cal.b = Double.parseDouble(b);
+            else
+                cal.b=0;
             if(cal.op!='0'&&cal.b!=0)
-                alLabel.setText(alLabel.getText()+calLabel.getText());
+                alLabel.setText(a+" "+cal.op+" "+b+"     ");
+            else
+                alLabel.setText(a+"     ");
             display(cal.result());
-            a = calLabel.getText();
-            b = "0";
+            a = calLabel.getText().substring(0, calLabel.getText().length()-1);
+            a = a.replace(",", "");
+            b = "";
             cal.op = '0';
         }
         
         if(ae.getSource()==bak){
+            if(!eq){
             String str="0";
-//            String str = calLabel.getText();
-//            if(str.length()>2){
-//                str = str.substring(0, (str.length()-2));
                 if(b.length()>1){
                     b = b.substring(0, b.length()-1);
-                    str = b;
-                    display('b');
+                    calLabel.setText(cal.op+b+" ");
                 }
-//                    cal.b = Double.parseDouble(str);
                 else if(b.length()==1&&b!="0"){
-                    b = "0";
-                    str = b;
-                    display('b');
+                    b = "";
+                    calLabel.setText(cal.op+" ");
                 }
                 else if(cal.op!='0'){
                     cal.op = '0';
-                    str = a;
-                    display('a');
+                    alLabel.setText("");
+                    calLabel.setText(a+" ");
                 }
                 else if(a.length()>1){
                     a = a.substring(0, a.length()-1);
-                    str = a;
-                    display('a');
+                    calLabel.setText(a+" ");
                 }
                 else if(a.length()==1&&a!="0"){ 
-                    a = "0";
-                    str = a;
-                    display('a');
+                    a = "";
+                    calLabel.setText("0 ");
                 }
-//                display(Double.parseDouble(str));
-//            }
-//            else{
-//                if(cal.op!='0')
-//                    cal.b = 0;
-//                else
-//                    cal.a = 0;
-//                display(0);
-//            }
+            }
         }
         if(ae.getSource()==dec){
+            if(eq){
+                a="";
+                eq = false;
+            }
             if(cal.op == '0'){
-//                    cal.a = cal.a*10 + i;
-                    if(!a.contains("."))
-                        a += ".";
-                    display('a');
-                    System.out.println(a);
-                }
-                else{
-//                    cal.b = cal.b*10 + i;
-                    if(!b.contains("."))
-                        b += ".";
-                    display('b');
-                    System.out.println(b);
-                }
+                if(!a.contains("."))
+                    a += ".";
+                calLabel.setText(a+" ");
+                System.out.println(a);
+            }
+            else{
+                if(!b.contains("."))
+                    b += ".";
+                calLabel.setText(cal.op+b+" ");
+                System.out.println(b);
+            }
         }
         
     }
@@ -245,22 +247,8 @@ public class Calculator implements ActionListener{
         else
             calLabel.setText(df.format(q)+" ");
     }
-    public void display(char z){
-        if(z=='a'){
-            System.out.println(a);
-            if(a.contains("."))
-//                System.out.println((Double.parseDouble(a))+" ");
-                calLabel.setText((Double.parseDouble(a))+" ");
-            else
-                calLabel.setText(df.format(Long.parseLong(a))+" ");
-        }
-        else{
-            if(b.contains("."))
-//                System.out.println((Double.parseDouble(a))+" ");
-                calLabel.setText((Double.parseDouble(b))+" ");
-            else
-                calLabel.setText(df.format(Long.parseLong(b))+" ");
-        }
+    public void display(String z){
+        calLabel.setText(z+" ");
     }
     
     
