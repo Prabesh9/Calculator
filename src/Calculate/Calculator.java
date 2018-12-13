@@ -151,7 +151,7 @@ public class Calculator implements ActionListener{
         
         for(i=0;i<4;i++){
             if(ae.getSource()==opt[i]){
-                if(cal.op!='0'){
+                if(b!=""){
                     cal.a = Double.parseDouble(a);
                     cal.b = Double.parseDouble(b);
                     display(cal.result());
@@ -163,7 +163,7 @@ public class Calculator implements ActionListener{
                 cal.a = Double.parseDouble(a);
 //                cal.b=Double.parseDouble(b);
                 cal.op = chr[i];
-                alLabel.setText(calLabel.getText()+"     ");
+                alLabel.setText(a+"     ");
                 calLabel.setText(cal.op+" ");
                 eq = false;
                 break;
