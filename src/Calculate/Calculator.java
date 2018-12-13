@@ -120,7 +120,7 @@ public class Calculator implements ActionListener{
         
         eql.addActionListener(this);
         dec.addActionListener(this);
-        
+        neg.addActionListener(this);
         
         calFrame.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent we){
@@ -142,7 +142,10 @@ public class Calculator implements ActionListener{
                 }
                 else{
                     b += i;
-                    calLabel.setText(cal.op+b+" ");
+                    if(b.contains("-"))
+                        calLabel.setText(cal.op+"("+b+") ");
+                    else
+                        calLabel.setText(cal.op+b+" ");
                 }
                 eq = false;
                 break;
@@ -233,6 +236,27 @@ public class Calculator implements ActionListener{
                     b += ".";
                 calLabel.setText(cal.op+b+" ");
                 System.out.println(b);
+            }
+        }
+        if(ae.getSource()==neg){
+            if(cal.op!='0'){
+                if(b.contains("-")){
+                    b = b.substring(1, b.length());
+                    calLabel.setText(cal.op+b+" ");
+                }
+                else{
+                    b = '-'+b;
+                    calLabel.setText(cal.op+"("+b+") ");
+                }
+            }
+            else if(a!=""){
+                if(a.contains("-")){
+                    a = a.substring(1, a.length());
+                }
+                else{
+                    a = "-"+a;
+                }
+                calLabel.setText(a+" ");
             }
         }
         
