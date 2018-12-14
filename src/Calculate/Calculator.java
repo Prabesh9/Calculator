@@ -143,9 +143,9 @@ public class Calculator implements ActionListener{
                 else{
                     b += i;
                     if(b.contains("-"))
-                        calLabel.setText(cal.op+"("+b+") ");
+                        calLabel.setText(cal.op+" ("+b+") ");
                     else
-                        calLabel.setText(cal.op+b+" ");
+                        calLabel.setText(cal.op+" "+b+" ");
                 }
                 eq = false;
                 break;
@@ -183,8 +183,12 @@ public class Calculator implements ActionListener{
                 cal.b = Double.parseDouble(b);
             else
                 cal.b=0;
-            if(cal.op!='0'&&cal.b!=0)
-                alLabel.setText(a+" "+cal.op+" "+b+"     ");
+            if(cal.op!='0'&&cal.b!=0){
+                if(cal.b>=0)
+                    alLabel.setText(a+" "+cal.op+" "+b+"     ");
+                else
+                    alLabel.setText(a+" "+cal.op+" ("+b+")     ");
+            }
             else
                 alLabel.setText(a+"     ");
             display(cal.result());
@@ -199,7 +203,7 @@ public class Calculator implements ActionListener{
             String str="0";
                 if(b.length()>1){
                     b = b.substring(0, b.length()-1);
-                    calLabel.setText(cal.op+b+" ");
+                    calLabel.setText(cal.op+" "+b+" ");
                 }
                 else if(b.length()==1&&b!="0"){
                     b = "";
@@ -234,7 +238,7 @@ public class Calculator implements ActionListener{
             else{
                 if(!b.contains("."))
                     b += ".";
-                calLabel.setText(cal.op+b+" ");
+                calLabel.setText(cal.op+" "+b+" ");
                 System.out.println(b);
             }
         }
@@ -242,11 +246,11 @@ public class Calculator implements ActionListener{
             if(cal.op!='0'){
                 if(b.contains("-")){
                     b = b.substring(1, b.length());
-                    calLabel.setText(cal.op+b+" ");
+                    calLabel.setText(cal.op+" "+b+" ");
                 }
                 else{
                     b = '-'+b;
-                    calLabel.setText(cal.op+"("+b+") ");
+                    calLabel.setText(cal.op+" ("+b+") ");
                 }
             }
             else if(a!=""){
