@@ -118,6 +118,7 @@ public class Calculator implements ActionListener{
             opt[i].addActionListener(this);
         }
         
+        clr.addActionListener(this);
         eql.addActionListener(this);
         dec.addActionListener(this);
         neg.addActionListener(this);
@@ -223,6 +224,13 @@ public class Calculator implements ActionListener{
                     calLabel.setText("0 ");
                 }
             }
+        }
+        if(ae.getSource()==clr){
+            a = "";
+            b = "";
+            cal.op= '0';
+            alLabel.setText("");
+            calLabel.setText("0 ");
         }
         if(ae.getSource()==dec){
             if(eq){
